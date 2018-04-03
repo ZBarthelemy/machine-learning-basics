@@ -44,7 +44,6 @@ X = X[:-forecast_out]
 
 df.dropna(inplace=True)
 y = np.array(df['label'])
-
 X_train, X_test, y_train, y_test = cross_validation.train_test_split(X, 
                                                                      y, 
                                                           test_size=0.2)
