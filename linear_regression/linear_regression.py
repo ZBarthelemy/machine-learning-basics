@@ -88,4 +88,4 @@ plt.xlabel('Date')
 plt.ylabel('Price')
 plt.show()
 
-df.to_csv("/Users/whitestallion/Desktop/machine learning basics/linear_regression/google_forecast.csv")
+#df.to_csv("/Users/whitestallion/Desktop/machine learning basics/linear_regression/google_forecast.csv")
