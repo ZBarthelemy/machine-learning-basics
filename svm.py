@@ -11,6 +11,7 @@ from matplotlib import style
 import numpy as np
 style.use('ggplot')
 
+#this class does not use kernals, assume data is already linear
 class Support_Vector_Machine:
     def __init__(self, visualization=True):
         self.visualization = visualization
@@ -43,7 +44,7 @@ class Support_Vector_Machine:
                       self.max_feature_value * 0.01,
                       self.max_feature_value * 0.001]
         
-        b_range_multiple = 5
+        b_range_multiple = 2
         b_multiple = 5
         
         latest_optimum = self.max_feature_value * 10
@@ -69,7 +70,7 @@ class Support_Vector_Machine:
                             for xi in self.data[i]:
                                 yi=i
                                 if not yi*(np.dot(w_t,xi)+b) >= 1:
-                                    found_option = False
+                                    found_option = False            
                                     
                         if found_option:
                             opt_dict[np.linalg.norm(w_t)] = [w_t, b]
@@ -85,7 +86,11 @@ class Support_Vector_Machine:
             self.w = opt_choice[0]
             self.b = opt_choice[1]
             latest_optimum = opt_choice[0][0] + step*2
-            
+        #optimize here if not close enough to 1 with different step.
+        for i in self.data:
+            for xi in self.data[i]:
+                yi=i
+                print(xi, ': ', yi*(np.dot(self.w,xi)+self.b))
             
     def predict(self, features):
         # sign( x.w + b)
@@ -112,19 +117,19 @@ class Support_Vector_Machine:
         # positive support vector hyperplane
         psv1 = hyperplane(hyp_x_min, self.w, self.b, 1)
         psv2 = hyperplane(hyp_x_max, self.w, self.b, 1)
-        self.ax.plot([hyp_x_min,hyp_x_max],[psv1,psv2])
+        self.ax.plot([hyp_x_min,hyp_x_max],[psv1,psv2], 'k')
         
         # (w.x + b) = -1
         # negative support vector hyperplane
         nsv1 = hyperplane(hyp_x_min, self.w, self.b, -1)
         nsv2 = hyperplane(hyp_x_max, self.w, self.b, -1)
-        self.ax.plot([hyp_x_min,hyp_x_max],[nsv1,nsv2])
+        self.ax.plot([hyp_x_min,hyp_x_max],[nsv1,nsv2], 'k')
         
         # (w.x + b) = 0
         # decision boundary vector hyperplane
         db1 = hyperplane(hyp_x_min, self.w, self.b, 0)
         db2 = hyperplane(hyp_x_max, self.w, self.b, 0)
-        self.ax.plot([hyp_x_min,hyp_x_max],[db1,db2])
+        self.ax.plot([hyp_x_min,hyp_x_max],[db1,db2], 'y--')
         
         plt.show()
         
@@ -137,6 +142,22 @@ data_dict = {-1:np.array([[1,7],
  
 svm = Support_Vector_Machine()
 svm.fit(data=data_dict)
+
+predict_us = [[0,10],
+              [1,3],
+              [3,4],
+              [3,5],
+              [5,5],
+              [5,6],
+              [6,-5],
+              [5,8]]
+
+for point in predict_us:
+    svm.predict(point)
+    
 svm.visualize()
+
+
+
 #[[plt.scatter(ii[0],ii[1], s=100, color = i) for ii in data_dict[i]] for i in data_dict]  
 #plt.show
