@@ -3,7 +3,6 @@
 """
 Created on Tue Apr  3 16:08:34 2018
 
-@author: whitestallion
 """
 
 #Classification of space with Euclidean distance
